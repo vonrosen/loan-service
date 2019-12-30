@@ -6,7 +6,7 @@ public class LoanDetails {
     private Integer termMonths;
     private Integer rateTimesHundred;
 
-    public LoanDetails(Integer loanAmountCents, Integer termMonths, Integer rateTimesHundred) {
+    public LoanDetails(Integer loanAmountCents, Integer rateTimesHundred, Integer termMonths) {
         this.loanAmountCents = loanAmountCents;
         this.termMonths = termMonths;
         this.rateTimesHundred = rateTimesHundred;
