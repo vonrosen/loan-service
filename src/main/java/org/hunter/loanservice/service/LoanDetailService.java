@@ -40,13 +40,13 @@ public class LoanDetailService {
         return loanDetails;
     }
 
-    public LoanDetails getLoanDetails(BigDecimal monthlyPayment, BigDecimal annualRate, Integer term) {
+    private LoanDetails getLoanDetails(BigDecimal monthlyPayment, BigDecimal annualRate, Integer term) {
         return new LoanDetails(
                 calculateLoanAmount(monthlyPayment, annualRate, term).multiply(BigDecimal.valueOf(100)).intValue(),
                 annualRate.multiply(BigDecimal.valueOf(100)).setScale(0).intValue(), term);
     }
 
-    public BigDecimal calculateLoanAmount(BigDecimal monthlyPayment, BigDecimal annualRate, Integer term) {
+    private BigDecimal calculateLoanAmount(BigDecimal monthlyPayment, BigDecimal annualRate, Integer term) {
         BigDecimal monthlyRate = annualRate.divide(BigDecimal.valueOf(100)).divide(BigDecimal.valueOf(12), 4,
                 BigDecimal.ROUND_UP);
         Integer numberPayments = term * 12;
