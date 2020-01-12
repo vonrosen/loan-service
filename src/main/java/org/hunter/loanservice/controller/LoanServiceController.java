@@ -2,6 +2,7 @@ package org.hunter.loanservice.controller;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import org.hunter.loanservice.exception.LoanServiceException;
 import org.hunter.loanservice.model.LoanDetails;
@@ -20,8 +21,8 @@ public class LoanServiceController {
     private LoanDetailService loanDetailService;
 
     @GetMapping(path = "/loan-values", produces = "application/json")
-    public List<LoanDetails> getLoanValues(@RequestParam(required = true) String maxPaymentAmount,
-            @RequestParam(required = true) Integer term) {
+    public Map<Integer, List<LoanDetails>> getLoanValues(@RequestParam(required = true) String maxPaymentAmount,
+            @RequestParam(required = false) Integer term) {
 
         try {
             return loanDetailService.getLoanDetails(new BigDecimal(maxPaymentAmount), term);

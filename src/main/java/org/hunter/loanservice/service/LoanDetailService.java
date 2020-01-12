@@ -2,7 +2,9 @@ package org.hunter.loanservice.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.hunter.loanservice.config.AppProperties;
@@ -17,27 +19,37 @@ public class LoanDetailService {
     @Autowired
     private AppProperties appProperties;
 
-    public List<LoanDetails> getLoanDetails(BigDecimal monthlyPayment, Integer term)
+    public Map<Integer, List<LoanDetails>> getLoanDetails(BigDecimal monthlyPayment, Integer term)
             throws LoanServiceException {
-        Set<BigDecimal> rates = null;
 
-        if (term == 30) {
-            rates = appProperties.getFixed30YearRates();
-        }
-        else if (term == 15) {
-            rates = appProperties.getFixed15YearRates();
-        }
-        else {
+        if (term != null && term != 30 && term != 15) {
             throw new LoanServiceException("Term of " + term + " not supported!");
         }
 
-        List<LoanDetails> loanDetails = new ArrayList<LoanDetails>();
+        Map<Integer, List<LoanDetails>> termsToRates = new HashMap<Integer, List<LoanDetails>>();
+        Set<BigDecimal> rates = null;
+        List<Integer> terms = new ArrayList<Integer>();
 
-        for (BigDecimal rate : rates) {
-            loanDetails.add(getLoanDetails(monthlyPayment, rate, term));
+        if (term == null) {
+            terms.add(30);
+            terms.add(15);
+        }
+        else {
+            terms.add(term);
         }
 
-        return loanDetails;
+        for (Integer thisTerm : terms) {
+            rates = appProperties.getFixedRates(thisTerm);
+            List<LoanDetails> loanDetails = new ArrayList<LoanDetails>();
+
+            for (BigDecimal rate : rates) {
+                loanDetails.add(getLoanDetails(monthlyPayment, rate, thisTerm));
+            }
+
+            termsToRates.put(thisTerm, loanDetails);
+        }
+
+        return termsToRates;
     }
 
     private LoanDetails getLoanDetails(BigDecimal monthlyPayment, BigDecimal annualRate, Integer term) {

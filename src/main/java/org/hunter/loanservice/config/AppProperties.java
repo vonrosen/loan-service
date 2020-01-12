@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.hunter.loanservice.exception.LoanServiceException;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "app")
@@ -52,16 +51,27 @@ public class AppProperties {
         this.fixed15YearMaxRate = fixed15YearMaxRate;
     }
 
-    public Set<BigDecimal> getFixed30YearRates() throws LoanServiceException {
+    public Set<BigDecimal> getFixedRates(int term) {
+        if (term == 15) {
+            return getFixed15YearRates();
+        }
+        else if (term == 30) {
+            return getFixed30YearRates();
+        }
+
+        return null;
+    }
+
+    public Set<BigDecimal> getFixed30YearRates() {
         if (fixed30YearRates == null) {
             fixed30YearRates = new LinkedHashSet<BigDecimal>();
 
             if (fixed30YearMaxRate == null) {
-                throw new LoanServiceException("fixed30YearMaxRate not set!");
+                throw new RuntimeException("fixed30YearMaxRate not set!");
             }
 
             if (fixed30YearMinRate == null) {
-                throw new LoanServiceException("fixed30YearMinRate not set!");
+                throw new RuntimeException("fixed30YearMinRate not set!");
             }
 
             BigDecimal start = new BigDecimal(fixed30YearMinRate);
