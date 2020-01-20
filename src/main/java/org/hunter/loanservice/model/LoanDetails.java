@@ -1,19 +1,21 @@
 package org.hunter.loanservice.model;
 
+import java.math.BigInteger;
+
 public class LoanDetails {
 
-    private Integer loanAmountCents;
+    private BigInteger loanAmountCents;
     private Integer termMonths;
     private Integer rateTimesHundred;
 
-    public LoanDetails(Integer loanAmountCents, Integer rateTimesHundred, Integer termMonths) {
+    public LoanDetails(BigInteger loanAmountCents, Integer rateTimesHundred, Integer termMonths) {
         this.loanAmountCents = loanAmountCents;
         this.termMonths = termMonths;
         this.rateTimesHundred = rateTimesHundred;
     }
 
 
-    public Integer getLoanAmountCents() {
+    public BigInteger getLoanAmountCents() {
         return loanAmountCents;
     }
 

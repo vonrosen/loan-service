@@ -4,12 +4,16 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.hunter.loanservice.config.AppProperties;
 import org.hunter.loanservice.exception.LoanServiceException;
 import org.hunter.loanservice.model.LoanDetails;
 import org.hunter.loanservice.service.LoanDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,7 +22,15 @@ import org.springframework.web.server.ResponseStatusException;
 public class LoanServiceController {
 
     @Autowired
+    private AppProperties appProperties;
+
+    @Autowired
     private LoanDetailService loanDetailService;
+
+    @ModelAttribute
+    public void setResponseHeader(HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+    }
 
     @GetMapping(path = "/loan-values", produces = "application/json")
     public Map<Integer, List<LoanDetails>> getLoanValues(@RequestParam(required = true) String maxPaymentAmount,

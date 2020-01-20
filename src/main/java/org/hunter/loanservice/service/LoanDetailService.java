@@ -54,7 +54,7 @@ public class LoanDetailService {
 
     private LoanDetails getLoanDetails(BigDecimal monthlyPayment, BigDecimal annualRate, Integer term) {
         return new LoanDetails(
-                calculateLoanAmount(monthlyPayment, annualRate, term).multiply(BigDecimal.valueOf(100)).intValue(),
+                calculateLoanAmount(monthlyPayment, annualRate, term).multiply(BigDecimal.valueOf(100)).toBigInteger(),
                 annualRate.multiply(BigDecimal.valueOf(100)).setScale(0).intValue(), term);
     }
 
