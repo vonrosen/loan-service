@@ -7,5 +7,4 @@ COPY . /app
 WORKDIR /app
 RUN mvn clean package
 EXPOSE 8080
-ENTRYPOINT ["/bin/bash"]
-CMD ["-c", "src/main/shell/start.sh"]
+ENTRYPOINT ["/app/src/main/shell/start.sh"]
